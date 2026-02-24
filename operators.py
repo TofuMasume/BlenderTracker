@@ -19,10 +19,10 @@ class OBJECT_OT_pv_rename(bpy.types.Operator):
     )
     bl_options = {'REGISTER', 'UNDO'}
 
-    new_base_name: bpy.props.StringProperty(
-        name="Base Name",
-        description="Object base name (suffix _Pt.000_v.000 will be appended)",
-        default="",
+    new_base_name: bpy.props.StringProperty(  # noqa: F722
+        name="Base Name",  # noqa: F722
+        description="Object base name (suffix _Pt.000_v.000 will be appended)",  # noqa: F722
+        default="",  # noqa: F722
     )
 
     @classmethod
@@ -83,11 +83,12 @@ class OBJECT_OT_pv_copy_pattern(bpy.types.Operator):
 
         # Scan before duplicating so the new object is not included
         max_pt = naming.max_pt_number_for_base(base, context.scene.objects)
-        # Unmanaged source is treated as implicit Pt.000; first copy → Pt.001
-        next_pt = max(max_pt + 1, 1)
+        # If no numeric Pt exists in scene, start from Pt.000
+        next_pt = max_pt + 1
 
         bpy.ops.object.duplicate(linked=False)
-        context.active_object.name = naming.build_name_from_int(base, next_pt, 0)
+        new_name = naming.build_name_from_int(base, next_pt, 0)
+        context.active_object.name = new_name
 
         return {'FINISHED'}
 
