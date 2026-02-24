@@ -8,13 +8,28 @@ bl_info = {
     "category": "Object",
 }
 
+import bpy
+
+from . import operators
+from . import panels
+from . import keymaps
+
+_CLASSES = [
+    *operators.CLASSES,
+    *panels.CLASSES,
+]
+
 
 def register():
-    pass
+    for cls in _CLASSES:
+        bpy.utils.register_class(cls)
+    keymaps.register()
 
 
 def unregister():
-    pass
+    keymaps.unregister()
+    for cls in reversed(_CLASSES):
+        bpy.utils.unregister_class(cls)
 
 
 if __name__ == "__main__":
