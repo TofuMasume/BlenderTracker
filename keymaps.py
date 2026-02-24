@@ -1,7 +1,9 @@
 """
 Keymap registration for Pattern & Version Manager.
 
-Registers Alt+F2 in the 3D View to invoke the pv_rename operator.
+Registers the following shortcuts in the 3D View:
+  Alt+F2        - Rename with auto-suffix (object.pv_rename)
+  Ctrl+Shift+D  - Pattern copy (object.pv_copy_pattern)
 """
 
 import bpy
@@ -24,6 +26,15 @@ def register():
         alt=True,
     )
     _addon_keymaps.append((km, kmi))
+
+    kmi_pattern = km.keymap_items.new(
+        "object.pv_copy_pattern",
+        type='D',
+        value='PRESS',
+        ctrl=True,
+        shift=True,
+    )
+    _addon_keymaps.append((km, kmi_pattern))
 
 
 def unregister():
